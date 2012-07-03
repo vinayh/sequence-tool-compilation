@@ -5,9 +5,11 @@ echo "FastQ Paired/Single End Sequence Analyzer"
 echo "Made by Vinay Hiremath, Licensed under GPL"
 echo
 
-echo -n "Enter path of first FastQ file: "
+echo -n "Enter directory of both FastQ files: "
+read -e FASTQ_DIR
+echo -n "Enter name of first FastQ file (without extension): "
 read -e FASTQ1
-echo -n "Enter path of second FastQ file: "
+echo -n "Enter name of second FastQ file (without extension): "
 read -e FASTQ2
 echo
 
@@ -48,7 +50,7 @@ do
 			echo "Starting"
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS $PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 ILLUMINACLIP
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS $PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 ILLUMINACLIP
 			;;
 		"SLIDINGWINDOW")
 			echo -n "Specify window size (number of bases to average across): "
@@ -58,7 +60,7 @@ do
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
 			echo "Starting..."
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 SLIDINGWINDOW:$SLIDINGWINDOW_WINDOW:$SLIDINGWINDOW_QUALITY
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 SLIDINGWINDOW:$SLIDINGWINDOW_WINDOW:$SLIDINGWINDOW_QUALITY
 			;;
 		"LEADING")
 			echo -n "Specify min quality: "
@@ -66,7 +68,7 @@ do
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
 			echo "Starting..."
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 LEADING:$LEADING_VALUE
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 LEADING:$LEADING_VALUE
 			;;
 		"TRAILING")
 			echo -n "Specify min quality"
@@ -74,7 +76,7 @@ do
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
 			echo "Starting"
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 TRAILING:$TRAILING_VALUE
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 TRAILING:$TRAILING_VALUE
 			;;
 		"CROP")
 			echo -n "Specify number of bases to keep (from start of read): "
@@ -82,7 +84,7 @@ do
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
 			echo "Starting..."
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 CROP:$CROP_VALUE
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 CROP:$CROP_VALUE
 			;;
 		"HEADCROP")
 			echo -n "Specify number of bases to remove (from start of read): "
@@ -90,7 +92,7 @@ do
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
 			echo "Starting..."
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 HEADCROP:$HEADCROP_VALUE
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 HEADCROP:$HEADCROP_VALUE
 			;;
 		"MINLENGTH")
 			echo -n "Specify min length of reads to be kept: "
@@ -98,20 +100,41 @@ do
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
 			echo "Starting..."
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 MINLENGTH:$MINLENGTH_VALUE
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 MINLENGTH:$MINLENGTH_VALUE
 			;;
 		"TOPHRED33")
 			echo "Starting..."
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 TOPHRED33
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 TOPHRED33
 			;;
 		"TOPHRED64")
 			echo "Starting..."
 			echo -n "If desired, enter manual flags to be used: "
 			read -e TRIM_FLAGS
-			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ1 $FASTQ2 $P_R1 $U_R1 $P_R2 $U_R2 TOPHRED64
+			java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE $TRIM_FLAGS -threads $THREADS -$PHRED -trimlog $TRIM_LOG $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq $P_R1 $U_R1 $P_R2 $U_R2 TOPHRED64
 			;;
+        "GENERATE VISUAL REPORT")
+            echo "Visual report will now be generated..."
+            PS3='Pick a tool: '
+                phred_options=("prinseq-lite, prinseq-graphs" "fastqc")
+                select VISUAL_CHOICE in "${visual_options[@]}"
+                do
+                case $VISUAL_CHOICE in
+		            "prinseq-lite, prinseq-graphs")
+                        echo "Generating graph configuration..."
+                        prinseq-lite -fastq $ACC_HITS
+                        echo "Generating graphs"
+                        prinseq-graphs
+	            		break
+		            	;;
+                    "fastqc"
+                        fastqc $P_R1 $P_R2
+                        echo -n "Type command for web browser to view html results in: "
+                        read -e BROWSER
+                        $BROWSER $FASTQ_DIR/$FASTQ1"_fastqc"/fastqc_report.html $FASTQ_DIR/$FASTQ2"_fastqc"/fastqc_report.html
+	esac
+done
 		"SKIP/CONTINUE")
 			echo "Continuing..."
 			break
@@ -119,61 +142,30 @@ do
 	esac
 done
 
+
+# BOWTIE AND TOPHAT
+echo -n "Enter path to reference FastA for index build: "
+read -e "REF_PATH"
+echo -n "If desired, enter manual flags to be used by tophat: "
+read -e TOPHAT_FLAGS
+bowtie/bowtie2-build $REF_PATH
+$TOPHAT_PATH $TOPHAT_FLAGS $FASTQ1 $FASTQ2
+tophat_out/accepted_hits.bam=$ACC_HITS
+samtools build tophat_out/accepted_hits.bam
+
+
+# VISUAL REPORT
 echo "Visual report will now be generated..."
 PS3='Pick a tool: '
-phred_options=("tophat, bowtie" "prinseq-lite, prinseq-graphs")
+phred_options=("prinseq-lite, prinseq-graphs" "fastqc report" "samtools, tablet")
 select VISUAL_CHOICE in "${visual_options[@]}"
 do
 	case $VISUAL_CHOICE in
-		"tophat, bowtie")
-			echo -n "Enter path to tophat"
-			read -e TOPHAT_PATH
-			echo -n "Enter path to the directory containing bowtie(2), bowtie(2)-align, bowtie(2)-inspect, and bowtie(2)-build: "
-			read -e BOWTIE_DIR
-			export $PATH=$BOWTIE_DIR
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			echo -n "Enter path to reference FastA for bowtie(2)-build: "
-			read -e "REF_PATH"
-			echo -n "If desired, enter manual flags to be used: "
-			read -e TOPHAT_FLAGS
-			$BOWTIE_DIR/bowtie2-build $REF_PATHs
-			$TOPHAT_PATH $TOPHAT_FLAGS $FASTQ1 $FASTQ2
-            samtools build tophat_out/accepted_hits.bam
-			break
-			;;
 		"prinseq-lite, prinseq-graphs")
-			PHRED=phred64
+            echo "Generating graph configuration..."
+            prinseq-lite -fastq $ACC_HITS
+            echo "Generating graphs"
+            prinseq-graphs
 			break
 			;;
 	esac
