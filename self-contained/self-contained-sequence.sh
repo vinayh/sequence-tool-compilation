@@ -149,24 +149,10 @@ read -e "REF_PATH"
 echo -n "If desired, enter manual flags to be used by tophat: "
 read -e TOPHAT_FLAGS
 bowtie/bowtie2-build $REF_PATH
-$TOPHAT_PATH $TOPHAT_FLAGS $FASTQ1 $FASTQ2
+$TOPHAT_PATH $TOPHAT_FLAGS $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq
 tophat_out/accepted_hits.bam=$ACC_HITS
-samtools build tophat_out/accepted_hits.bam
+samtools build $ACC_HITS
 
 
-# VISUAL REPORT
-echo "Visual report will now be generated..."
-PS3='Pick a tool: '
-phred_options=("prinseq-lite, prinseq-graphs" "fastqc report" "samtools, tablet")
-select VISUAL_CHOICE in "${visual_options[@]}"
-do
-	case $VISUAL_CHOICE in
-		"prinseq-lite, prinseq-graphs")
-            echo "Generating graph configuration..."
-            prinseq-lite -fastq $ACC_HITS
-            echo "Generating graphs"
-            prinseq-graphs
-			break
-			;;
-	esac
-done
+# TABLET
+tablet $REF_PATH $ACC_HITS
