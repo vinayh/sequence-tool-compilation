@@ -1,18 +1,18 @@
 #!/bin/bash
-clear
 
+# TITLE
+clear
 echo "FastQ Paired/Single End Sequence Analyzer"
 echo "Made by Vinay Hiremath, Licensed under GPL"
 echo
 
-echo -n "Enter directory of both FastQ files: "
-read -e FASTQ_DIR
-echo -n "Enter name of first FastQ file (without extension): "
+# GET MAIN INFORMATION
+echo -n "Enter path of first FastQ file (without extension): "
 read -e FASTQ1
-echo -n "Enter name of second FastQ file (without extension): "
+echo -n "Enter path of second FastQ file (without extension): "
 read -e FASTQ2
 echo
-
+../$FASTQ1=FASTQ_DIR
 echo -n "Enter path of desired paired read 1 file: "
 read -e P_R1
 echo -n "Enter path of desired UNpaired read 1 file: "
@@ -26,6 +26,7 @@ read -e TRIM_LOG
 echo -n "Enter number of threads to be used: "
 read -e THREADS
 
+# QUALITY MENU
 PS3='Pick a quality scale: '
 phred_options=("phred33" "phred64")
 select PHRED_CHOICE in "${phred_options[@]}"
@@ -42,6 +43,8 @@ do
 	esac
 done
 
+#################################
+# MAIN ACTION MENU FROM TRIMMOMATIC
 PS3='Pick a step: '
 select TRIM_CHOICE in ILLUMINACLIP SLIDINGWINDOW LEADING TRAILING CROP HEADCROP MINLENGTH TOPHRED33 TOPHRED64 SKIP/CONTINUE
 do
@@ -122,10 +125,16 @@ do
                 do
                 case $VISUAL_CHOICE in
 		            "prinseq-lite, prinseq-graphs")
-                        echo "Generating graph configuration..."
-                        prinseq-lite -fastq $ACC_HITS
-                        echo "Generating graphs"
-                        prinseq-graphs
+                        echo "Generating graph file..."
+                        prinseq-lite -fastq $FASTQ_DIR/$FASTQ1.fastq -out_format 4 -graph_data fastq1.gd
+                        prinseq-lite -fastq $FASTQ_DIR/$FASTQ2.fastq -out_format 4 -graph_data fastq2.gd
+                        echo "Generating html report..."
+                        mkdir read1_report
+                        mkdir read2_report
+                        cd read1_report
+                        prinseq-graphs ../fastq1.gd -html_all
+                        cd ../read2_report
+                        prinseq-graphs ../fastq2.gd -html_all
 	            		break
 		            	;;
                     "fastqc"
@@ -133,8 +142,10 @@ do
                         echo -n "Type command for web browser to view html results in: "
                         read -e BROWSER
                         $BROWSER $FASTQ_DIR/$FASTQ1"_fastqc"/fastqc_report.html $FASTQ_DIR/$FASTQ2"_fastqc"/fastqc_report.html
-	esac
-done
+                        ;;
+            	esac
+                done
+            ;;
 		"SKIP/CONTINUE")
 			echo "Continuing..."
 			break
@@ -142,7 +153,7 @@ done
 	esac
 done
 
-
+##############################
 # BOWTIE AND TOPHAT
 echo -n "Enter path to reference FastA for index build: "
 read -e "REF_PATH"
@@ -152,7 +163,6 @@ bowtie/bowtie2-build $REF_PATH
 $TOPHAT_PATH $TOPHAT_FLAGS $FASTQ_DIR/$FASTQ1.fastq $FASTQ_DIR/$FASTQ2.fastq
 tophat_out/accepted_hits.bam=$ACC_HITS
 samtools build $ACC_HITS
-
 
 # TABLET
 tablet $REF_PATH $ACC_HITS
