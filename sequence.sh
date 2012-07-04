@@ -1,4 +1,6 @@
 #!/bin/bash
+
+###
 clear
 
 echo "FastQ Paired/Single End Sequence Analyzer"
