@@ -1,5 +1,6 @@
 #!/bin/bash
 
+############################
 # TITLE
 clear
 echo "FastQ Paired/Single End Sequence Analyzer"
