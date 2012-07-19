@@ -19,8 +19,11 @@ print "2. Phred64"
 QUAL = raw_input("Format of quality descriptors: ")
 if QUAL == 1:
 	PHRED = "phred33"
-if QUAL == 2:
+elif QUAL == 2:
 	PHRED = "phred64"
+else:
+	print "Invalid option!"
+
 
 # Initialize running of .jar file
 import os
@@ -37,14 +40,38 @@ print "8. TOPHRED33"
 print "9. TOPHRED64"
 print "10. SKIP/CONTINUE"
 TRIM = raw_input("Step: ")
-#if TRIM == 1:
-		
-#if TRIM == 2:
-#if TRIM == 3:
-#if TRIM == 4:
-#if TRIM == 5:
-#if TRIM == 6:
-#if TRIM == 7:
-#if TRIM == 8:
-#if TRIM == 9:
-#if TRIM == 10:
+if TRIM == 1:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s ILLUMINACLIP') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2)
+elif TRIM == 2:
+	print "Starting..."
+	SLIDINGWINDOW_WINDOW = raw_input("Specify window size (number of bases to average across): ")
+	SLIDINGWINDOW_QUALITY = raw_input("Specify required quality: ")
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+	print "java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s SLIDINGWINDOW:%s:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, SLIDINGWINDOW_WINDOW, SLIDINGWINDOW_QUALITY"
+	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s SLIDINGWINDOW:%s:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, SLIDINGWINDOW_WINDOW, SLIDINGWINDOW_QUALITY)
+elif TRIM == 3:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 4:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 5:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 6:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 7:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 8:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 9:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+elif TRIM == 10:
+	print "Starting..."
+	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
