@@ -1,6 +1,9 @@
 # Introduction
+import os
+os.system('clear')
 print "FastQ Paired/Single End Sequence Analyzer for Python"
-print "Made by Vinay Hiremath, Licensed under GPL"
+print "Made by Vinay Hiremath"
+print "Licensed under GPL"
 
 # Getting values for various initial variables
 FASTQ1 = raw_input("Enter path of first FastQ file: ")
@@ -24,10 +27,10 @@ elif QUAL == 2:
 else:
 	print "Invalid option!"
 
-
-# Initialize running of .jar file
-import os
 # Trimmomatic steps
+os.system('clear')
+print "Starting Trimmomatic steps..."
+
 print ""
 print "1. ILLUMINACLIP"
 print "2. SLIDINGWINDOW"
@@ -41,74 +44,84 @@ print "9. TOPHRED64"
 print "10. SKIP/CONTINUE"
 TRIM = raw_input("Step: ")
 
-for x in xrange(1:1000):
-###
-if TRIM == 1:
+TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2 = 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+trimmomatic = 'java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s' % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2)
+
+def trim_flags():
 	print "Starting..."
 	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s ILLUMINACLIP') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2)
-	continue
-###
-elif TRIM == 2:
-	print "Starting..."
-	SLIDINGWINDOW_WINDOW = raw_input("Specify window size (number of bases to average across): ")
-	SLIDINGWINDOW_QUALITY = raw_input("Specify required quality: ")
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	print "java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s SLIDINGWINDOW:%s:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, SLIDINGWINDOW_WINDOW, SLIDINGWINDOW_QUALITY"
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s SLIDINGWINDOW:%s:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, SLIDINGWINDOW_WINDOW, SLIDINGWINDOW_QUALITY)
-###
-elif TRIM == 3:
-	print "Starting..."
-	LEADING_QUALITY = raw_input("Specify minimum quality: ")
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s LEADING:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, LEADING_QUALITY)
-	continue
-###
-elif TRIM == 4:
-	print "Starting..."
-	TRAILING_QUALITY = raw_input("Specify minimum quality: ")
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s TRAILING:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, TRAILING_QUALITY)
-	continue
-###
-elif TRIM == 5:
-	print "Starting..."
-	CROP_VALUE = raw_input("Specify number of bases to keep (from start of read): ")
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s CROP:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, CROP_VALUE)
-	continue
-###
-elif TRIM == 6:
-	print "Starting..."
-	HEADCROP_VALUE = raw_input("Specify number of bases to crop (from start of read): ")
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s HEADCROP:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, HEADCROP_VALUE)
-	continue
-###
-elif TRIM == 7:
-	print "Starting..."
-	MINLENGTH_VALUE = raw_input("Specify minimum length of reads to keep: ")
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s MINLENGTH:%s') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2, MINLENGTH_VALUE)
-	continue
-###
-elif TRIM == 8:
-	print "Starting..."
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s TOPHRED33') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2)
-	continue
-###
-elif TRIM == 9:
-	print "Starting..."
-	TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
-	os.system('java -classpath trimmomatic.jar org.usadellab.trimmomatic.TrimmomaticPE %s -threads %s -%s -trimlog %s %s %s %s %s %s %s TOPHRED64') % (TRIM_FLAGS, THREADS, PHRED, TRIM_LOG, FASTQ1, FASTQ2, P_R1, U_R1, P_R2, U_R2)
-	continue
-###
-elif TRIM == 10:
-	break
-###
-else
-	print "Invalid option!"
+
+TRIM = 10
+for x in xrange(1-100):
+	if TRIM == 1:
+		trim_flags()
+		os.system('%s ILLUMINACLIP') % trimmomatic
+		continue
+	elif TRIM == 2:
+		SLIDINGWINDOW_WINDOW = raw_input("Specify window size (number of bases to average across): ")
+		SLIDINGWINDOW_QUALITY = raw_input("Specify required quality: ")
+		trim_flags()
+		os.system('%s SLIDINGWINDOW:%s:%s') % (trimmomatic, SLIDINGWINDOW_WINDOW, SLIDINGWINDOW_QUALITY)
+		continue
+	elif TRIM == 3:
+		LEADING_QUALITY = raw_input("Specify minimum quality: ")
+		trim_flags()
+		os.system('%s LEADING:%s') % (trimmomatic, LEADING_QUALITY)
+		continue
+	elif TRIM == 4:
+		TRAILING_QUALITY = raw_input("Specify minimum quality: ")
+		trim_flags()
+		os.system('%s TRAILING:%s') % (trimmomatic, TRAILING_QUALITY)
+		continue
+	elif TRIM == 5:
+		CROP_VALUE = raw_input("Specify number of bases to keep (from start of read): ")
+		trim_flags()
+		os.system('%s CROP:%s') % (trimmomatic, CROP_VALUE)
+		continue
+	elif TRIM == 6:
+		HEADCROP_VALUE = raw_input("Specify number of bases to crop (from start of read): ")
+		trim_flags()
+		os.system('%s HEADCROP:%s') % (trimmomatic, HEADCROP_VALUE)
+		continue
+	elif TRIM == 7:
+		MINLENGTH_VALUE = raw_input("Specify minimum length of reads to keep: ")
+		trim_flags()
+		os.system('%s MINLENGTH:%s') % (trimmomatic, MINLENGTH_VALUE)
+		continue
+	elif TRIM == 8:
+		trim_flags()
+		TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+		os.system('%s TOPHRED33') % (trimmomatic, U_R2)
+		continue
+	elif TRIM == 9:
+		trim_flags()
+		TRIM_FLAGS = raw_input("Enter any optional manual flags: ")
+		os.system('%s TOPHRED64') % (trimmomatic, U_R2)
+		continue
+	elif TRIM == 10:
+		break
+	else:
+		print "Invalid option!"
+
+# Assembly or report generation steps
 
 
-print "Done!"
+ASSEMBLY_CHOICE = raw_input("Start assembly (y or n)? ")
+for x in xrange(1-100):
+	if ASSEMBLY_CHOICE == "y":
+		print "HOUSE"
+		os.system('clear')
+		tophat_path = raw_input("Enter path to tophat: ")
+		bowtie_dir = raw_input("Enter path of directory containing bowtie2 tools: ")
+		genome_path = raw_input("Enter path to reference genome (FastA): ")
+		tophat_flags = raw_input("Enter any optional manual flags: ")
+		os.system('%s/bowtie2-build %s') % (bowtie_dir, genome_path)
+		tophat_flags = raw_input("Enter any optional manual flags for tophat: ")
+		os.system('%s %s -p %s %s %s') % (tophat_path, tophat_flags, THREADS, FASTQ1, FASTQ2)
+	elif ASSEMBLY_CHOICE == "n":
+		break
+	else:
+		print "Invalid option!"
+		continue
+
+
